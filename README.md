@@ -120,10 +120,22 @@ python run_system_diagnostic.py
 
 ```
 pubmed-statistical-rigor-extractor/
-├── fast_statistical_extractor_fixed.py  # Main extraction pipeline
+├── fast_statistical_extractor_fixed.py  # Main extraction pipeline (Step 1)
 ├── calculate_rigor_stats.py            # Statistical analysis
 ├── validate_*.py                        # Validation scripts
 ├── run_system_diagnostic.py             # System diagnostics
+├── llm_pipeline/                        # LLM enhancement pipeline (Step 2)
+│   ├── ollama_manager.py               # Multi-instance Ollama orchestration
+│   ├── batch_processor.py              # Intelligent article batching
+│   ├── extraction_engine.py            # Core LLM extraction logic
+│   ├── progress_tracker.py             # Checkpoint/resume system
+│   ├── validator.py                    # Quality validation
+│   ├── merger.py                       # Merges LLM and regex results
+│   ├── main_pipeline.py                # Main orchestrator
+│   ├── distributed_runner.py           # Multi-machine processing
+│   ├── config.py                       # Configuration management
+│   ├── start_pipeline.py               # Easy startup script
+│   └── run_pipeline.bat                # Windows batch launcher
 ├── PROJECT_ACHIEVEMENT_SUMMARY.md      # Marketing summary
 ├── COMPREHENSIVE_TECHNICAL_DOCUMENTATION.md  # Full technical docs
 └── README.md                            # This file
@@ -169,10 +181,49 @@ Extracted statistics are saved in JSONL format:
 - Institutional research assessment
 - Training data for AI models
 
+## Step 2: LLM Enhancement Pipeline (NEW!)
+
+Building on the regex-based extraction (Step 1), we've now implemented a comprehensive LLM pipeline to capture statistics that regex patterns miss, particularly from:
+- Tables and complex data structures
+- Figure captions and descriptions
+- Non-standard statistical reporting formats
+- Narrative descriptions of results
+
+### LLM Pipeline Features
+- **Multi-Model Orchestration**: Runs 3-5 Qwen2.5:72b instances in parallel
+- **Intelligent Batching**: Groups similar articles for optimal processing
+- **Distributed Processing**: Master-worker architecture for scalability
+- **Auto-Resume**: Checkpoints every 5 minutes with PostgreSQL tracking
+- **Quality Validation**: Compares LLM results with regex baseline
+- **Production Ready**: Full error handling, monitoring, and logging
+
+### Expected Improvements
+- ~60% more confidence intervals extracted
+- Captures statistics from tables/figures regex can't parse
+- Identifies non-standard p-value formats and significance indicators
+- Extracts effect sizes in narrative form
+
+### Quick Start (LLM Pipeline)
+```bash
+# Navigate to LLM pipeline directory
+cd llm_pipeline
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Test with 100 articles
+python start_pipeline.py test
+
+# Run full pipeline (30-40 days for 4.48M articles)
+python main_pipeline.py --start-from-beginning --use-all-articles
+```
+
+See `llm_pipeline/README.md` for complete documentation.
+
 ## Future Enhancements
 
-1. **LLM Integration**: Process low-scoring articles with language models
-2. **Table/Figure Extraction**: Parse statistics from non-text elements
+1. ~~**LLM Integration**: Process low-scoring articles with language models~~ ✓ COMPLETED
+2. ~~**Table/Figure Extraction**: Parse statistics from non-text elements~~ ✓ COMPLETED
 3. **Real-time Updates**: Process new articles as published
 4. **API Development**: RESTful API for rigor score queries
 
