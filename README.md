@@ -188,7 +188,7 @@ Extracted statistics are saved in JSONL format:
 
 If you use this work in your research, please cite:
 ```
-PubMed Statistical Rigor Extractor (2024)
+PubMed Statistical Rigor Extractor (2025)
 https://github.com/Built-Simple/pubmed-statistical-rigor-extractor
 ```
 
@@ -208,4 +208,4 @@ For questions or collaboration: [Create an issue](https://github.com/Built-Simpl
 
 ---
 
-*Completed September 2024 - Processing 4.27 million articles with zero errors*
+*Completed September 24, 2025 - Processing 4.27 million articles with zero errors*
